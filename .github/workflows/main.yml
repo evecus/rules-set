@@ -3,7 +3,7 @@ name: 统一规则集维护中心
 on:
   workflow_dispatch:
   schedule:
-    - cron: "42 23 * * *"
+    - cron: "42 0 * * *"
 
 permissions:
   contents: write
