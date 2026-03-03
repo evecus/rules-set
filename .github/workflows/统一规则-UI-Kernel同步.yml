@@ -161,21 +161,21 @@ jobs:
       - name: 下载 UI Zip 文件
         run: |
           echo "正在下载 MetaCubeXD..."
-          curl -L "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip" -o "metacubexd-gh-pages.zip"
+          curl -L "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip" -o "meta.zip"
           echo "正在下载 Zashboard..."
-          curl -L "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip" -o "zashboard-gh-pages.zip"
+          curl -L "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip" -o "zash.zip"
 
       - name: 验证文件大小
         run: |
           ls -lh *.zip
-          if [ $(stat -c%s "metacubexd-gh-pages.zip") -lt 1000 ]; then echo "MetaCubeXD 下载异常"; exit 1; fi
-          if [ $(stat -c%s "zashboard-gh-pages.zip") -lt 1000 ]; then echo "Zashboard 下载异常"; exit 1; fi
+          if [ $(stat -c%s "meta.zip") -lt 1000 ]; then echo "MetaCubeXD 下载异常"; exit 1; fi
+          if [ $(stat -c%s "zash.zip") -lt 1000 ]; then echo "Zashboard 下载异常"; exit 1; fi
 
       - name: 提交至 ui 分支
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add metacubexd-gh-pages.zip zashboard-gh-pages.zip
+          git add meta.zip zash.zip
           if git diff --cached --quiet; then
             echo "文件内容无变化，跳过推送。"
           else
