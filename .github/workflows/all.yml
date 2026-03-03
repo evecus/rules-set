@@ -1,0 +1,499 @@
+name: 统一规则同步中心
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  # ============================================================
+  # Job 1: 自建规则集生成 (原: 统一规则生成.yml)
+  # 产出 -> master 分支: sing-box/*.json|srs, mihomo/*.yaml|mrs
+  # ============================================================
+  build-custom-rules:
+    name: 生成自建规则集 (sing-box & mihomo)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: 安装必要工具 (sing-box & mihomo)
+        run: |
+          wget https://github.com/SagerNet/sing-box/releases/download/v1.12.17/sing-box-1.12.17-linux-amd64.tar.gz
+          tar -xzf sing-box-1.12.17-linux-amd64.tar.gz
+          sudo mv sing-box-1.12.17-linux-amd64/sing-box /usr/local/bin/
+          wget https://github.com/MetaCubeX/mihomo/releases/download/v1.19.17/mihomo-linux-amd64-v1.19.17.gz
+          gunzip mihomo-linux-amd64-v1.19.17.gz
+          chmod +x mihomo-linux-amd64-v1.19.17
+          sudo mv mihomo-linux-amd64-v1.19.17 /usr/local/bin/mihomo
+          sing-box version
+          mihomo -v
+
+      - name: 自动创建目录
+        run: mkdir -p sing-box mihomo temp_work temp_build temp_ip
+
+      - name: 处理所有 IP 规则
+        run: |
+          set -euo pipefail
+          curl -L "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.json" -o sing-box/cn_ip.json
+          jq '.rules[0] |= {ip_cidr: [.ip_cidr[] | select(contains(":") | not)]}' sing-box/cn_ip.json > sing-box/cn_ip4.json
+          curl -L "https://raw.githubusercontent.com/1715173329/IPCIDR-CHINA/refs/heads/rule-set/cn.srs" -o temp_work/cn_lite_raw.srs
+          sing-box rule-set decompile --output sing-box/cn_ip-lite.json temp_work/cn_lite_raw.srs
+          jq '.rules[0] |= {ip_cidr: [.ip_cidr[] | select(contains(":") | not)]}' sing-box/cn_ip-lite.json > sing-box/cn_ip4-lite.json
+
+          IP_FILES=("facebook.yaml" "google.yaml" "twitter.yaml" "telegram.yaml")
+          for file in "${IP_FILES[@]}"; do
+            curl -sL "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/$file" -o "temp_ip/$file"
+            grep -E '^\s*-\s*' "temp_ip/$file" | sed 's/^[[:space:]]*- //' >> temp_ip/all_raw_ips.txt
+          done
+          grep -v ":" temp_ip/all_raw_ips.txt | sort -u > temp_ip/v4.txt || true
+          grep ":" temp_ip/all_raw_ips.txt | sort -u > temp_ip/v6.txt || true
+          jq -n --rawfile v4 temp_ip/v4.txt --rawfile v6 temp_ip/v6.txt '{version: 2, rules: [{ip_cidr: [($v4|split("\n")[]), ($v6|split("\n")[])] | map(select(length>0))}]}' > sing-box/foreign_ip.json
+          jq -n --rawfile v4 temp_ip/v4.txt '{version: 2, rules: [{ip_cidr: ($v4|split("\n")|map(select(length>0)))}]}' > sing-box/foreign_ip4.json
+
+          for f in cn_ip cn_ip4 cn_ip-lite cn_ip4-lite foreign_ip foreign_ip4; do
+            echo "payload:" > "mihomo/$f.yaml"
+            jq -r '.rules[].ip_cidr[]?' "sing-box/$f.json" | sed 's/^/  - /' >> "mihomo/$f.yaml"
+          done
+
+      - name: 处理精简/修复版域名规则
+        run: |
+          set -euo pipefail
+          curl -L "https://raw.githubusercontent.com/1715173329/sing-geosite/refs/heads/rule-set-unstable/geosite-geolocation-cn.srs" -o temp_work/cn_dom_raw.srs
+          sing-box rule-set decompile --output temp_work/raw_cn_dom.json temp_work/cn_dom_raw.srs
+          jq '{version: .version, rules: [.rules[] | {domain: (.domain | map(sub("^\\.+"; ""))), domain_suffix: (.domain_suffix | map(sub("^\\.+"; "")))} | del(..|nulls)]}' temp_work/raw_cn_dom.json > sing-box/cn_domain-lite.json
+
+          FILES=("category-ai-!cn.yaml" "discord.yaml" "facebook.yaml" "github.yaml" "netflix.yaml" "google.yaml" "instagram.yaml" "paypal.yaml" "reddit.yaml" "grok.yaml" "spotify.yaml" "tiktok.yaml" "twitter.yaml" "whatsapp.yaml" "openai.yaml" "youtube.yaml" "geogle-gemini.yaml" "telegram.yaml" "claude.yaml")
+          for file in "${FILES[@]}"; do
+            curl -sL "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/$file" -o "temp_work/$file"
+            grep -E '^\s*-\s*"?\+\.' "temp_work/$file" | sed -E 's/^[[:space:]]*- "?\+\.//; s/"$//; s/^\.*//' >> temp_build/suffix.txt || true
+            grep -E '^\s*-\s*[^+. ]' "temp_work/$file" | grep -v "payload:" | sed -E 's/^[[:space:]]*- "//; s/^[[:space:]]*- //; s/"$//' >> temp_build/exact.txt || true
+          done
+          sort -u temp_build/suffix.txt -o temp_build/s.txt; sort -u temp_build/exact.txt -o temp_build/e.txt
+          jq -n --rawfile s temp_build/s.txt --rawfile e temp_build/e.txt '{version:2, rules:[{domain:($e|split("\n")|map(select(length>0))), domain_suffix:($s|split("\n")|map(select(length>0)))}]}' > sing-box/foreign_domain-lite.json
+
+          for f in cn_domain-lite foreign_domain-lite ads_domain-lite; do
+            echo "payload:" > "mihomo/$f.yaml"
+            jq -r '.rules[].domain_suffix[]?' "sing-box/$f.json" | sed 's/^\.*//; s/^/  - +./' >> "mihomo/$f.yaml" || true
+            jq -r '.rules[].domain[]?' "sing-box/$f.json" | sed 's/^\.*//; s/^/  - /' >> "mihomo/$f.yaml" || true
+          done
+
+      - name: 处理全量域名规则
+        run: |
+          set -euo pipefail
+          curl -L "https://raw.githubusercontent.com/1715173329/sing-geosite/refs/heads/rule-set-unstable/geosite-geolocation-!cn.srs" -o temp_work/f_raw.srs
+          sing-box rule-set decompile --output temp_work/f_raw.json temp_work/f_raw.srs
+          jq '{version: .version, rules: [.rules[] | {domain: (.domain | map(sub("^\\.+"; ""))), domain_suffix: (.domain_suffix | map(sub("^\\.+"; "")))} | del(..|nulls)]}' temp_work/f_raw.json > sing-box/foreign_domain.json
+          echo "payload:" > mihomo/foreign_domain.yaml
+          jq -r '.rules[].domain_suffix[]?' sing-box/foreign_domain.json | sed 's/^\.*//; s/^/  - +./' >> mihomo/foreign_domain.yaml
+          jq -r '.rules[].domain[]?' sing-box/foreign_domain.json | sed 's/^\.*//; s/^/  - /' >> mihomo/foreign_domain.yaml
+
+          curl -L "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.yaml" -o mihomo/cn_domain.yaml
+          curl -L "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.json" -o sing-box/cn_domain.json
+          curl -L "https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.yaml" -o mihomo/ads_domain.yaml
+          curl -L "https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblocksingbox.json" -o sing-box/ads_domain.json
+
+      - name: 编译与提交至 master 分支
+        run: |
+          set -euo pipefail
+
+          for f in sing-box/*.json; do
+            if [ -f "$f" ] && [ $(jq '.rules | length' "$f") -gt 0 ]; then
+              echo "正在编译 Sing-box 规则: $f"
+              sing-box rule-set compile --output "${f%.json}.srs" "$f"
+            else
+              echo "跳过空文件或无效 JSON: $f"
+            fi
+          done
+
+          for f in mihomo/*.yaml; do
+            if [ -f "$f" ]; then
+              if grep -q "^  - " "$f"; then
+                echo "正在编译 Mihomo 规则: $f"
+                TYPE=$([[ "$f" == *"ip"* ]] && echo "ipcidr" || echo "domain")
+                mihomo convert-ruleset "$TYPE" yaml "$f" "${f%.yaml}.mrs" || echo "编译 $f 失败，跳过"
+              else
+                echo "跳过空规则文件 (仅有 payload): $f"
+                rm "$f"
+              fi
+            fi
+          done
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout master || git checkout -b master
+
+          git add sing-box/*.json sing-box/*.srs || true
+          git add mihomo/*.yaml mihomo/*.mrs || true
+
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: 完整同步规则集 $(date +'%Y-%m-%d %H:%M')"
+            git push origin master
+          else
+            echo "没有发现任何规则变动，跳过推送。"
+          fi
+
+  # ============================================================
+  # Job 2: 下载 UI 压缩包 (原: ui下载.yml)
+  # 产出 -> ui 分支: metacubexd-gh-pages.zip, zashboard-gh-pages.zip
+  # ============================================================
+  download-ui:
+    name: 下载并同步 UI 压缩包
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ui branch
+        uses: actions/checkout@v4
+        with:
+          ref: ui
+          fetch-depth: 0
+
+      - name: 下载 UI Zip 文件
+        run: |
+          echo "正在下载 MetaCubeXD..."
+          curl -L "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip" -o "metacubexd-gh-pages.zip"
+          echo "正在下载 Zashboard..."
+          curl -L "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip" -o "zashboard-gh-pages.zip"
+
+      - name: 验证文件大小
+        run: |
+          ls -lh *.zip
+          if [ $(stat -c%s "metacubexd-gh-pages.zip") -lt 1000 ]; then echo "MetaCubeXD 下载异常"; exit 1; fi
+          if [ $(stat -c%s "zashboard-gh-pages.zip") -lt 1000 ]; then echo "Zashboard 下载异常"; exit 1; fi
+
+      - name: 提交至 ui 分支
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add metacubexd-gh-pages.zip zashboard-gh-pages.zip
+          if git diff --cached --quiet; then
+            echo "文件内容无变化，跳过推送。"
+          else
+            git commit -m "chore: 自动更新 UI 压缩包 ($(date +'%Y-%m-%d %H:%M'))"
+            git push origin ui
+          fi
+
+  # ============================================================
+  # Job 3: 同步 MetaCubeX 规则 (原: MetaCubeX规则下载全.yml)
+  # 产出 -> laws 分支: MetaCubeX/ (yaml, json)
+  #      -> master 分支: MetaCubeX/ (mrs, srs)
+  # ============================================================
+  sync-metacubex-rules:
+    name: 同步 MetaCubeX 全量规则
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout destination repository
+        uses: actions/checkout@v4
+        with:
+          path: dest
+          fetch-depth: 0
+
+      - name: Clone source repo (meta branch)
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/MetaCubeX/meta-rules-dat.git -b meta source-meta
+          cd source-meta
+          git sparse-checkout set geo/geosite geo/geoip
+
+      - name: Clone source repo (sing branch)
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/MetaCubeX/meta-rules-dat.git -b sing source-sing
+          cd source-sing
+          git sparse-checkout set geo/geosite geo/geoip
+
+      - name: 整理文件至临时目录
+        run: |
+          mkdir -p /tmp/MetaCubeX/mihomo/geosite
+          mkdir -p /tmp/MetaCubeX/mihomo/geoip
+          mkdir -p /tmp/MetaCubeX/sing-box/geosite
+          mkdir -p /tmp/MetaCubeX/sing-box/geoip
+
+          cp source-meta/geo/geosite/*.{mrs,yaml,json} /tmp/MetaCubeX/mihomo/geosite/ 2>/dev/null || true
+          cp source-meta/geo/geoip/*.{mrs,yaml,json} /tmp/MetaCubeX/mihomo/geoip/ 2>/dev/null || true
+          cp source-sing/geo/geosite/*.{srs,json} /tmp/MetaCubeX/sing-box/geosite/ 2>/dev/null || true
+          cp source-sing/geo/geoip/*.{srs,json} /tmp/MetaCubeX/sing-box/geoip/ 2>/dev/null || true
+
+      - name: 上传 YAML & JSON 至 laws 分支
+        run: |
+          cd dest
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          git fetch origin laws || true
+          git checkout laws || git checkout -b laws
+
+          rm -rf MetaCubeX/
+          cp -r /tmp/MetaCubeX/ .
+          find MetaCubeX/ -type f \( -name "*.mrs" -o -name "*.srs" \) -delete
+
+          git add MetaCubeX/
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Auto-update GeoData (Source only): $(date +'%Y-%m-%d %H:%M:%S')"
+            git push origin laws
+          else
+            echo "No changes for laws branch."
+          fi
+
+      - name: 上传 MRS & SRS 至 master 分支
+        run: |
+          cd dest
+          git fetch origin master || true
+          git checkout master || git checkout -b master
+
+          rm -rf MetaCubeX/
+          cp -r /tmp/MetaCubeX/ .
+          find MetaCubeX/ -type f \( -name "*.yaml" -o -name "*.json" \) -delete
+
+          git add MetaCubeX/
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Auto-update GeoData (Binary only): $(date +'%Y-%m-%d %H:%M:%S')"
+            git push origin master
+          else
+            echo "No changes for master branch."
+          fi
+
+  # ============================================================
+  # Job 4: 转换 1715173329 规则 (原: 1715173329规则转换全.yml)
+  # 产出 -> laws 分支: 1715173329/ (json, yaml)
+  #      -> master 分支: 1715173329/ (srs, mrs)
+  # ============================================================
+  convert-1715173329-rules:
+    name: 转换 1715173329 全量规则
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 安装必要工具 (sing-box & mihomo)
+        run: |
+          wget https://github.com/SagerNet/sing-box/releases/download/v1.12.17/sing-box-1.12.17-linux-amd64.tar.gz
+          tar -xzf sing-box-1.12.17-linux-amd64.tar.gz
+          sudo mv sing-box-1.12.17-linux-amd64/sing-box /usr/local/bin/
+          wget https://github.com/MetaCubeX/mihomo/releases/download/v1.19.17/mihomo-linux-amd64-v1.19.17.gz
+          gunzip mihomo-linux-amd64-v1.19.17.gz
+          chmod +x mihomo-linux-amd64-v1.19.17
+          sudo mv mihomo-linux-amd64-v1.19.17 /usr/local/bin/mihomo
+
+      - name: 1. 处理 Geosite (域名)
+        run: |
+          set -euo pipefail
+          BASE_OUT="1715173329/geosite"
+          SB_DIR="$BASE_OUT/sing-box"
+          MH_DIR="$BASE_OUT/mihomo"
+          mkdir -p "$SB_DIR" "$MH_DIR" temp_srs
+          git clone --depth 1 -b rule-set-unstable https://github.com/1715173329/sing-geosite.git raw_repo
+          cp raw_repo/*.srs temp_srs/
+          for file_path in temp_srs/*.srs; do
+            [ -e "$file_path" ] || continue
+            base_name=$(basename "$file_path" .srs)
+            [ $(stat -c%s "$file_path") -lt 100 ] && continue
+            sing-box rule-set decompile --output "temp_srs/raw.json" "$file_path"
+            jq '{version: .version, rules: [.rules[] | {domain: (if (.domain | type == "array") then (.domain | map(sub("^\\.+"; "")) | select(length > 0)) else null end), domain_suffix: (if (.domain_suffix | type == "array") then (.domain_suffix | map(sub("^\\.+"; "")) | select(length > 0)) else null end)} | del(..|nulls)]}' "temp_srs/raw.json" > "$SB_DIR/$base_name.json"
+            sing-box rule-set compile --output "$SB_DIR/$base_name.srs" "$SB_DIR/$base_name.json"
+            echo "payload:" > "$MH_DIR/$base_name.yaml"
+            jq -r '.rules[].domain_suffix[]?' "$SB_DIR/$base_name.json" 2>/dev/null | sed 's/^\.*//; s/^/  - +./' >> "$MH_DIR/$base_name.yaml" || true
+            jq -r '.rules[].domain[]?' "$SB_DIR/$base_name.json" 2>/dev/null | sed 's/^\.*//; s/^/  - /' >> "$MH_DIR/$base_name.yaml" || true
+            if [ -s "$MH_DIR/$base_name.yaml" ]; then
+              mihomo convert-ruleset domain yaml "$MH_DIR/$base_name.yaml" "$MH_DIR/$base_name.mrs" || true
+            fi
+          done
+          rm -rf raw_repo temp_srs
+
+      - name: 2. 处理 CNIP
+        run: |
+          set -euo pipefail
+          SB_DIR="1715173329/cnip/sing-box"
+          MH_DIR="1715173329/cnip/mihomo"
+          mkdir -p "$SB_DIR" "$MH_DIR" temp_ip
+          SUCCESS=false
+          URLS=("https://raw.githubusercontent.com/1715173329/IPCIDR-CHINA/master/ip.txt" "https://fastly.jsdelivr.net/gh/1715173329/IPCIDR-CHINA@master/ip.txt")
+          for url in "${URLS[@]}"; do
+            if curl -fLs "$url" -o "temp_ip/ip_raw.txt" && [ $(stat -c%s "temp_ip/ip_raw.txt") -gt 100 ]; then
+              SUCCESS=true && break
+            fi
+          done
+          if [ "$SUCCESS" = "true" ]; then
+            grep -E '^[0-9a-fA-F:./]+' "temp_ip/ip_raw.txt" | tr -d '\r' > "temp_ip/ip.txt"
+            grep "\." "temp_ip/ip.txt" > "temp_ip/ip4.txt" || true
+            grep ":" "temp_ip/ip.txt" > "temp_ip/ip6.txt" || true
+            for file in ip ip4 ip6; do
+              if [ -s "temp_ip/$file.txt" ]; then
+                jq -n --rawfile ips "temp_ip/$file.txt" '{version: 2, rules: [{ip_cidr: ($ips | split("\n") | map(select(length > 0)))}] }' > "$SB_DIR/$file.json"
+                sing-box rule-set compile --output "$SB_DIR/$file.srs" "$SB_DIR/$file.json"
+                echo "payload:" > "$MH_DIR/$file.yaml"
+                sed 's/^/  - /' "temp_ip/$file.txt" >> "$MH_DIR/$file.yaml"
+                mihomo convert-ruleset ipcidr yaml "$MH_DIR/$file.yaml" "$MH_DIR/$file.mrs"
+              fi
+            done
+          fi
+          rm -rf temp_ip
+
+      - name: 3. 上传 JSON/YAML 至 laws 分支
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+
+          mkdir -p /tmp/generated_files
+          cp -r 1715173329/ /tmp/generated_files/
+
+          git fetch origin laws || true
+          git checkout laws || git checkout -b laws
+
+          rm -rf 1715173329/
+          cp -r /tmp/generated_files/1715173329/ .
+          find 1715173329 -type f \( -name "*.srs" -o -name "*.mrs" \) -delete
+
+          git add 1715173329/
+          if ! git diff --staged --quiet; then
+            git commit -m "Update: 同步 JSON 与 YAML (laws)"
+            git push origin laws
+          fi
+
+      - name: 4. 上传 SRS/MRS 至 master 分支
+        run: |
+          git fetch origin master || true
+          git checkout master || git checkout -b master
+
+          rm -rf 1715173329/
+          cp -r /tmp/generated_files/1715173329/ .
+          find 1715173329 -type f \( -name "*.json" -o -name "*.yaml" \) -delete
+
+          git add 1715173329/
+          if ! git diff --staged --quiet; then
+            git commit -m "Update: 同步 SRS 与 MRS (master)"
+            git push origin master
+          fi
+
+  # ============================================================
+  # Job 5: 下载内核最新版 (mihomo + sing-box, amd64 + arm64)
+  # 产出 -> kernel 分支根目录:
+  #   mihomo-linux-amd64-v{ver}.gz  或  mihomo-linux-amd64-v3-v{ver}.gz (跟随官方命名)
+  #   mihomo-linux-arm64-v{ver}.gz
+  #   sing-box-{ver}-linux-amd64.tar.gz
+  #   sing-box-{ver}-linux-arm64.tar.gz
+  # ============================================================
+  download-kernels:
+    name: 下载最新内核 (mihomo & sing-box)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kernel branch
+        uses: actions/checkout@v4
+        with:
+          ref: kernel
+          fetch-depth: 0
+
+      - name: 获取 mihomo 最新版本及文件名
+        id: mihomo
+        run: |
+          # 获取版本号
+          VER=$(curl -fsSL "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
+            | jq -r '.tag_name' | sed 's/^v//')
+          echo "mihomo 版本: $VER"
+
+          # 从 release assets 中动态查找 linux-amd64 文件名
+          # v1.19.20+ 改名为 amd64-v3，旧版为 amd64，通过 API 精确匹配避免猜名
+          ASSETS=$(curl -fsSL "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" \
+            | jq -r '.assets[].name')
+
+          # 优先匹配 linux-amd64-v3（新命名），其次匹配 linux-amd64（旧命名），排除 compatible
+          AMD64_FILE=$(echo "$ASSETS" | grep -E "^mihomo-linux-amd64-v3-v" | head -1)
+          if [ -z "$AMD64_FILE" ]; then
+            AMD64_FILE=$(echo "$ASSETS" | grep -E "^mihomo-linux-amd64-v${VER}\.gz$" | head -1)
+          fi
+
+          # arm64
+          ARM64_FILE=$(echo "$ASSETS" | grep -E "^mihomo-linux-arm64-v${VER}\.gz$" | head -1)
+
+          echo "amd64 文件: $AMD64_FILE"
+          echo "arm64 文件: $ARM64_FILE"
+          echo "ver=$VER"           >> "$GITHUB_OUTPUT"
+          echo "amd64=$AMD64_FILE"  >> "$GITHUB_OUTPUT"
+          echo "arm64=$ARM64_FILE"  >> "$GITHUB_OUTPUT"
+
+      - name: 获取 sing-box 最新版本号
+        id: singbox
+        run: |
+          VER=$(curl -fsSL "https://api.github.com/repos/SagerNet/sing-box/releases/latest" \
+            | jq -r '.tag_name' | sed 's/^v//')
+          echo "sing-box 版本: $VER"
+          echo "ver=$VER" >> "$GITHUB_OUTPUT"
+
+      - name: 下载 mihomo 内核 (amd64 & arm64)
+        env:
+          MH_VER:   ${{ steps.mihomo.outputs.ver }}
+          AMD64:    ${{ steps.mihomo.outputs.amd64 }}
+          ARM64:    ${{ steps.mihomo.outputs.arm64 }}
+        run: |
+          BASE="https://github.com/MetaCubeX/mihomo/releases/download/v${MH_VER}"
+          echo "正在下载 mihomo amd64: $AMD64"
+          curl -fL "$BASE/$AMD64" -o "$AMD64"
+          echo "正在下载 mihomo arm64: $ARM64"
+          curl -fL "$BASE/$ARM64" -o "$ARM64"
+          ls -lh mihomo-linux-*.gz
+
+      - name: 下载 sing-box 内核 (amd64 & arm64)
+        env:
+          SB_VER: ${{ steps.singbox.outputs.ver }}
+        run: |
+          BASE="https://github.com/SagerNet/sing-box/releases/download/v${SB_VER}"
+          AMD64_FILE="sing-box-${SB_VER}-linux-amd64.tar.gz"
+          ARM64_FILE="sing-box-${SB_VER}-linux-arm64.tar.gz"
+          echo "正在下载 sing-box amd64: $AMD64_FILE"
+          curl -fL "$BASE/$AMD64_FILE" -o "$AMD64_FILE"
+          echo "正在下载 sing-box arm64: $ARM64_FILE"
+          curl -fL "$BASE/$ARM64_FILE" -o "$ARM64_FILE"
+          ls -lh sing-box-*.tar.gz
+
+      - name: 验证下载文件完整性
+        env:
+          AMD64:  ${{ steps.mihomo.outputs.amd64 }}
+          ARM64:  ${{ steps.mihomo.outputs.arm64 }}
+          SB_VER: ${{ steps.singbox.outputs.ver }}
+        run: |
+          MIN_SIZE=1000000  # 最小 1MB，防止下载到错误页
+          for f in \
+            "$AMD64" \
+            "$ARM64" \
+            "sing-box-${SB_VER}-linux-amd64.tar.gz" \
+            "sing-box-${SB_VER}-linux-arm64.tar.gz"; do
+            SIZE=$(stat -c%s "$f")
+            if [ "$SIZE" -lt "$MIN_SIZE" ]; then
+              echo "❌ 文件过小，疑似下载失败: $f (${SIZE} bytes)"
+              exit 1
+            else
+              echo "✅ $f ($(numfmt --to=iec $SIZE))"
+            fi
+          done
+
+      - name: 清理旧版内核文件并提交至 kernel 分支
+        env:
+          MH_VER: ${{ steps.mihomo.outputs.ver }}
+          SB_VER: ${{ steps.singbox.outputs.ver }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 删除所有旧版内核文件，只保留本次最新版
+          git rm -f mihomo-linux-*.gz sing-box-*.tar.gz 2>/dev/null || true
+
+          # 暂存本次下载的所有内核文件
+          git add mihomo-linux-*.gz sing-box-*.tar.gz
+
+          if git diff --cached --quiet; then
+            echo "内核版本无变化，跳过推送。"
+          else
+            git commit -m "chore: 更新内核 mihomo-v${MH_VER} & sing-box-v${SB_VER} ($(date +'%Y-%m-%d'))"
+            git push origin kernel
+          fi
