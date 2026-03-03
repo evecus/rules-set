@@ -16,6 +16,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: dest
+          # 【修改点 1】: 显式指定检出 master 分支
+          ref: master
+          # 获取完整历史以确保 push 顺畅
+          fetch-depth: 0
 
       - name: Clone source repo (meta branch)
         run: |
@@ -60,12 +64,16 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
+          # 【修改点 2】: 确保在本地切换到 master
+          git checkout master || git checkout -b master
+
           # 只添加 mrs 和 srs
           find . -type f \( -name "*.mrs" -o -name "*.srs" \) -exec git add {} +
 
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Auto-update GeoData (mrs & srs only): $(date +'%Y-%m-%d %H:%M:%S')"
-            git push
+            # 【修改点 3】: 明确推送至 origin master
+            git push origin master
           else
             echo "No changes detected, skipping push."
           fi
