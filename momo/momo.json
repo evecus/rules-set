@@ -69,7 +69,7 @@
         "tag": "medirect",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/direct.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/direct.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       },
@@ -77,7 +77,7 @@
         "tag": "meproxy",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/proxy.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/proxy.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       },
@@ -85,7 +85,7 @@
         "tag": "foreign_domain",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/foreign_domain-lite.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/foreign_domain-lite.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       },
@@ -93,7 +93,7 @@
         "tag": "foreign_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/foreign_ip4.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/foreign_ip4.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       },
@@ -101,7 +101,7 @@
         "tag": "ads",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/ads_domain-lite.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/ads_domain-lite.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       },
@@ -109,7 +109,7 @@
         "tag": "geoip-cn",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/cn_ip-lite.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/cn_ip-lite.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       },
@@ -117,7 +117,7 @@
         "tag": "geosite-cn",
         "type": "remote",
         "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/cn_domain-lite.srs",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/cn_domain-lite.srs",
         "download_detour": "直连",
         "update_interval": "1d"
       }
