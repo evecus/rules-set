@@ -1,5 +1,4 @@
-name: 统一规则、UI、Kernel同步
-
+name: 统一规则-UI-Kernel同步
 on:
   workflow_dispatch:
   schedule:
@@ -229,7 +228,7 @@ jobs:
           git config user.name "github-actions[bot]"
 
           git fetch origin laws || true
-          git checkout laws || git checkout -b laws
+          git checkout -B laws origin/laws 2>/dev/null || git checkout -b laws
 
           rm -rf MetaCubeX/
           cp -r /tmp/MetaCubeX/ .
@@ -247,7 +246,7 @@ jobs:
         run: |
           cd dest
           git fetch origin master || true
-          git checkout master || git checkout -b master
+          git checkout -B master origin/master 2>/dev/null || git checkout -b master
 
           rm -rf MetaCubeX/
           cp -r /tmp/MetaCubeX/ .
@@ -350,7 +349,8 @@ jobs:
           cp -r 1715173329/ /tmp/generated_files/
 
           git fetch origin laws || true
-          git checkout laws || git checkout -b laws
+          # 强制同步到远端最新（Job3 可能已推送新 commit）
+          git checkout -B laws origin/laws 2>/dev/null || git checkout -b laws
 
           rm -rf 1715173329/
           cp -r /tmp/generated_files/1715173329/ .
@@ -365,7 +365,8 @@ jobs:
       - name: 4. 上传 SRS/MRS 至 master 分支
         run: |
           git fetch origin master || true
-          git checkout master || git checkout -b master
+          # 强制同步到远端最新（Job1/Job3 可能已推送新 commit）
+          git checkout -B master origin/master 2>/dev/null || git checkout -b master
 
           rm -rf 1715173329/
           cp -r /tmp/generated_files/1715173329/ .
