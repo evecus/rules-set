@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -e
+
+TABLE_NAME="singbox"
+NFT_FILE="/opt/singbox/singbox.nft"
+FWMARK=1
+TABLE_ID=100
+
+case "$1" in
+  start)
+    # 1. 检测并加载 nftables 规则
+    if nft list tables inet | grep -q "table inet $TABLE_NAME"; then
+        echo "nftables: Table '$TABLE_NAME' already exists, skipping."
+    else
+        nft -f "$NFT_FILE"
+    fi
+
+    # 2. 检测并添加 IPv4 策略路由
+    if ! ip rule show | grep -q "fwmark $(printf '0x%x' $FWMARK) lookup $TABLE_ID"; then
+        ip rule add fwmark $FWMARK lookup $TABLE_ID
+        ip route add local default dev lo table $TABLE_ID
+    fi
+
+    # 3. 检测并添加 IPv6 策略路由
+    if ! ip -6 rule show | grep -q "fwmark $(printf '0x%x' $FWMARK) lookup $TABLE_ID"; then
+        ip -6 rule add fwmark $FWMARK lookup $TABLE_ID
+        ip -6 route add local default dev lo table $TABLE_ID
+    fi
+    echo "Done: TProxy service is running."
+    ;;
+
+  stop)
+    # 1. 检测并删除 IPv4 策略路由
+    if ip rule show | grep -q "fwmark $(printf '0x%x' $FWMARK) lookup $TABLE_ID"; then
+        ip rule del fwmark $FWMARK lookup $TABLE_ID
+        ip route del local default dev lo table $TABLE_ID
+    fi
+
+    # 2. 检测并删除 IPv6 策略路由
+    if ip -6 rule show | grep -q "fwmark $(printf '0x%x' $FWMARK) lookup $TABLE_ID"; then
+        ip -6 rule del fwmark $FWMARK lookup $TABLE_ID
+        ip -6 route del local default dev lo table $TABLE_ID
+    fi
+
+    # 3. 检测并删除 nftables 表
+    if nft list tables inet | grep -q "table inet $TABLE_NAME"; then
+        nft delete table inet $TABLE_NAME
+    fi
+    echo "Done: TProxy service has stopped."
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+esac

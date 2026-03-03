@@ -1,0 +1,62 @@
+#!/usr/sbin/nft -f
+
+# 定义 IPv4 保留地址
+define RESERVED_IP4 = {
+    100.64.0.0/10,
+    127.0.0.0/8,
+    10.0.0.0/8,
+    169.254.0.0/16,
+    172.16.0.0/12,
+    192.0.0.0/24,
+    192.168.0.0/16,
+    224.0.0.0/4,
+    240.0.0.0/4,
+    255.255.255.255/32
+}
+
+# 定义 IPv6 保留地址 (包含回环、链路本地、唯一本地、组播等)
+define RESERVED_IP6 = {
+    ::/128,
+    ::1/128,
+    ::ffff:0:0/96,
+    64:ff9b::/96,
+    100::/64,
+    2001::/32,
+    2001:20::/28,
+    2001:db8::/32,
+    2002::/16,
+    fc00::/7,
+    fe80::/10,
+    ff00::/8
+}
+
+# 使用 inet 表可以同时处理 ip 和 ip6
+table inet singbox {
+    chain prerouting {
+        type filter hook prerouting priority mangle; policy accept;
+        
+        # 排除保留地址
+        ip daddr $RESERVED_IP4 return
+        ip6 daddr $RESERVED_IP6 return
+        
+        # 排除局域网 DNS 以外的流量 (可选，根据你之前的逻辑保持)
+        ip daddr 10.0.0.0/24 tcp dport != 53 return
+        ip daddr 10.0.0.0/24 udp dport != 53 return
+
+        # TProxy 核心规则
+        meta l4proto { tcp, udp } tproxy to :7893 meta mark set 1
+    }
+
+    chain output {
+        type route hook output priority mangle; policy accept;
+        # 排除保留地址
+        ip daddr $RESERVED_IP4 return
+        ip6 daddr $RESERVED_IP6 return
+        
+        # 防止环路：如果流量已经标记为 7893 (代理进程发的包)，则直接放行
+        meta mark 7893 return
+        
+        # 标记剩余流量交由路由表处理
+        meta l4proto { tcp, udp } meta mark set 1
+    }
+}

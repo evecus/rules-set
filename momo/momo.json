@@ -1,0 +1,188 @@
+{
+  "dns": {
+    "servers": [
+      {
+        "tag": "ali-dns",
+        "type": "udp",
+        "server": "223.5.5.5"
+      },
+      {
+        "tag": "google-dns",
+        "type": "https",
+        "server": "8.8.8.8",
+        "detour": "默认代理",
+        "path": "/dns-query"
+      }
+    ],
+    "rules": [
+      {
+        "rule_set": [
+          "meproxy",
+          "foreign_domain"
+        ],
+        "server": "google-dns",
+         "strategy": "prefer_ipv4"
+      },
+      {
+        "rule_set": [
+          "medirect",
+          "geosite-cn"
+        ],
+        "server": "ali-dns",
+        "strategy": "prefer_ipv4"
+      }
+    ],
+    "final": "google-dns",
+   "strategy": "prefer_ipv4",
+    "independent_cache": true,
+    "reverse_mapping": true
+  },
+  "route": {
+    "rules": [
+      {
+        "inbound": "dns-in",
+        "action": "hijack-dns"
+      },
+      {
+        "rule_set": "ads",
+        "outbound": "拦截"
+      },
+      {
+        "rule_set": [
+          "meproxy",
+          "foreign_domain",
+          "foreign_ip"
+        ],
+        "outbound": "默认代理"
+      },
+      {
+        "rule_set": [
+          "medirect",
+          "geosite-cn",
+          "geoip-cn"
+        ],
+        "outbound": "直连"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "medirect",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/direct.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "meproxy",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/proxy.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "foreign_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/foreign_domain-lite.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "foreign_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/foreign_ip4.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "ads",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/ads_domain-lite.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/cn_ip-lite.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@main/sing-box/cn_domain-lite.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      }
+    ],
+    "final": "漏网之鱼",
+    "auto_detect_interface": true,
+    "default_domain_resolver": {
+      "server": "google-dns"
+    }
+  },
+  "inbounds": [
+    {
+      "tag": "dns-in",
+      "type": "direct",
+      "listen": "::",
+      "listen_port": 1153
+    },
+    {
+      "tag": "tproxy-in",
+      "type": "tproxy",
+      "listen": "::",
+      "listen_port": 7899,
+      "sniff": true,
+      "sniff_override_destination": true
+    }
+  ],
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "/etc/momo/run/cache.db",
+      "store_fakeip": false
+    },
+    "clash_api": {
+      "external_controller": "0.0.0.0:9090",
+      "external_ui": "/etc/momo/run/ui",
+      "external_ui_download_url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@ui/zashboard-gh-pages.zip",
+      "external_ui_download_detour": "直连",
+      "secret": "1234",
+      "default_mode": "rule"
+    }
+  },
+  "outbounds": [
+    {
+      "tag": "默认代理",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "漏网之鱼",
+      "type": "selector",
+      "outbounds": [
+        "默认代理",
+        "直连"
+      ]
+    },
+    {
+      "tag": "直连",
+      "type": "direct"
+    },
+    {
+      "tag": "拦截",
+      "type": "block"
+    }
+  ],
+  "log": {
+    "disabled": true
+  }
+}
