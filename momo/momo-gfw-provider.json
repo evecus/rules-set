@@ -1,0 +1,165 @@
+{
+  "providers": [
+    {
+      "type": "remote",
+      "tag": "订阅",
+      "url": "",
+      "path": "/etc/momo/providers/zijian.json",
+      "user_agent": "clash.meta",
+      "update_interval": "12h0m0s",
+      "health_check": {
+        "enabled": true,
+        "url": "https://www.gstatic.com/generate_204",
+        "interval": "10m0s",
+        "timeout": "3s"
+      },
+      "override_tls": {
+        "enabled": true,
+        "insecure": true
+      }
+    }
+  ],
+  "dns": {
+    "servers": [
+      {
+        "tag": "ali-dns",
+        "type": "udp",
+        "server": "223.5.5.5",
+        "server_port": 53
+      },
+      {
+        "tag": "google-dns",
+        "type": "https",
+        "server": "8.8.8.8",
+        "detour": "默认代理",
+        "path": "/dns-query",
+        "domain_resolver": "ali-dns"
+      }
+    ],
+    "rules": [
+      {
+        "rule_set": [
+          "meproxy",
+          "foreign_domain"
+        ],
+        "server": "google-dns",
+         "strategy": "prefer_ipv4"
+      }
+    ],
+    "final": "ali-dns",
+    "strategy": "prefer_ipv6",
+    "independent_cache": true,
+    "reverse_mapping": true
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "/etc/momo/run/cache.db",
+      "store_fakeip": false
+    },
+    "clash_api": {
+      "external_controller": "0.0.0.0:9090",
+      "external_ui": "/etc/momo/run/ui",
+      "external_ui_download_url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@ui/zash.zip",
+      "external_ui_download_detour": "直连",
+      "secret": "1234",
+      "default_mode": "rule"
+    }
+  },
+  "route": {
+    "rules": [
+      {
+        "inbound": "dns-in",
+        "action": "hijack-dns"
+      },
+      {
+        "rule_set": "ads",
+        "outbound": "拦截"
+      },
+      {
+        "rule_set": [
+          "meproxy",
+          "foreign_domain",
+          "foreign_ip"
+        ],
+        "outbound": "默认代理"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "meproxy",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/proxy.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "foreign_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/foreign_domain-lite.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "ads",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/ads_domain-lite.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      },
+      {
+        "tag": "foreign_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/evecus/rules_set@master/sing-box/foreign_ip4.srs",
+        "download_detour": "直连",
+        "update_interval": "1d"
+      }
+    ],
+    "final": "直连",
+    "auto_detect_interface": true,
+    "default_domain_resolver": {
+      "server": "ali-dns"
+    }
+  },
+  "inbounds": [
+    {
+      "tag": "dns-in",
+      "type": "direct",
+      "listen": "::",
+      "listen_port": 1153
+    },
+    {
+      "tag": "tproxy-in",
+      "type": "tproxy",
+      "listen": "::",
+      "listen_port": 7899,
+      "sniff": true,
+      "sniff_override_destination": false
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "默认代理",
+      "type": "selector",
+      "outbounds": null,
+      "providers": [
+        "订阅"
+      ]
+    },
+    {
+      "tag": "直连",
+      "type": "direct"
+    },
+    {
+      "tag": "拦截",
+      "type": "block"
+    }
+  ],
+  "log": {
+    "disabled": true
+  }
+}
