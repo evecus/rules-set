@@ -340,6 +340,7 @@ payload:
   - +.disneyworld-go.com
   - +.dkr.com
   - +.dl.steam.clngaa.com
+  - +.dlaf.jp
   - +.dlsite.com
   - +.dlsite.com.tw
   - +.dlsite.jp
@@ -632,8 +633,6 @@ payload:
   - +.igcc.jp
   - +.ign.com
   - +.ignimg.com
-  - +.illusion.co.jp
-  - +.illusion.jp
   - +.imageworks.com
   - +.imdb.com
   - +.imdb.to
@@ -1305,6 +1304,7 @@ payload:
   - +.tra-ww000-cp.akamaized.net
   - +.trbcdn.net
   - +.triokini.com
+  - +.ttcdn-us.com
   - +.ttlivecdn.com
   - +.ttoverseaus.net
   - +.ttvnw.net
