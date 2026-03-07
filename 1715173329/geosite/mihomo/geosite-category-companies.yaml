@@ -2063,7 +2063,6 @@ payload:
   - +.cpedge.com
   - +.cqcorea.com
   - +.crankplayer.com
-  - +.crates.io
   - +.createspace.com
   - +.createwhatsnext.com
   - +.creativecloud.com
@@ -2419,7 +2418,6 @@ payload:
   - +.dockerizer.com
   - +.docs.com
   - +.docs.new
-  - +.docs.rs
   - +.documentforce.com
   - +.dodv.com
   - +.dollarfotoclub.com
@@ -5537,9 +5535,7 @@ payload:
   - +.route53.cn
   - +.routerboard.com
   - +.run.app
-  - +.rust-lang.org
   - +.rustdesk.com
-  - +.rustup.rs
   - +.rzr.to
   - +.s-bluemix.net
   - +.s-cashonmobile.com
@@ -6681,6 +6677,8 @@ payload:
   - +.ymail.com
   - +.yogalayout.com
   - +.yopornshop.com
+  - +.youla.io
+  - +.youla.ru
   - +.youporn.com
   - +.youporngay.com
   - +.youpornpremium.com
@@ -7533,6 +7531,8 @@ payload:
   - ssl-google-analytics.l.google.com
   - ssl.gstatic.com
   - sslredirect.corp.google.com
+  - st-ok-pts.cdn-vk.ru
+  - st-ok.cdn-vk.ru
   - staging-controlbe.floonet.goog
   - staging-databe.floonet.goog
   - staging.databe.floonet.goog
@@ -7729,4 +7729,5 @@ payload:
   - www.support.apple.com
   - xp.apple.com
   - yandex-pogoda.static-storage.net
+  - youla-web-static.mrgcdn.ru
   - yt3.googleusercontent.com

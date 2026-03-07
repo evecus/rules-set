@@ -972,6 +972,7 @@ payload:
   - +.dmcdn.net
   - +.dmhy.org
   - +.dmm.co.jp
+  - +.dns.cloudflare.com
   - +.dns2go.com
   - +.dnscrypt.org
   - +.dnssec.net
@@ -1558,6 +1559,7 @@ payload:
   - +.google.cv
   - +.google.cz
   - +.google.de
+  - +.google.dev
   - +.google.dj
   - +.google.dk
   - +.google.dm
@@ -1967,6 +1969,7 @@ payload:
   - +.internetpopculture.com
   - +.interseclab.org
   - +.inthenameofconfuciusmovie.com
+  - +.investing.com
   - +.invidio.us
   - +.inxian.com
   - +.ipdefenseforum.com
