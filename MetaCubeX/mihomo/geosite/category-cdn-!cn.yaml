@@ -2,19 +2,6 @@ payload:
     - +.b-cdn.net
     - +.bunny.net
     - +.bunnycdn.com
-    - +.imgix.com
-    - +.imgix.net
-    - +.delvenetworks.com
-    - +.limelight.com
-    - +.lldns.net
-    - +.llnw-trials.com
-    - +.llnw.com
-    - +.llnw.net
-    - +.llnwd.net
-    - +.llnwi.net
-    - +.quantil.com
-    - +.stackpath.com
-    - +.stackpath.dev
     - +.ak1.net
     - +.aka-ai.com
     - +.aka-ai.net
@@ -84,6 +71,12 @@ payload:
     - +.iamakamai.net
     - +.soasta-dswb.com
     - +.srtcdn.net
+    - +.quantil.com
+    - +.stackpath.com
+    - +.stackpath.dev
+    - +.vrcdn.cloud
+    - +.vrcdn.live
+    - +.vrcdn.video
     - +.cdn77.com
     - +.cdn77.org
     - +.argotunnel.com
@@ -148,11 +141,18 @@ payload:
     - +.fastlylabs.com
     - +.fastlylb.net
     - +.zencdn.net
+    - +.imgix.com
+    - +.imgix.net
+    - +.delvenetworks.com
+    - +.limelight.com
+    - +.lldns.net
+    - +.llnw-trials.com
+    - +.llnw.com
+    - +.llnw.net
+    - +.llnwd.net
+    - +.llnwi.net
     - +.pagecdn.com
     - +.pagecdn.io
-    - +.vrcdn.cloud
-    - +.vrcdn.live
-    - +.vrcdn.video
     - +.akamai.co.kr
     - +.one.one.one
     - +.accdn.com.cn
