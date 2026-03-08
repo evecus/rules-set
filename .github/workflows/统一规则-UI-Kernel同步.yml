@@ -462,21 +462,30 @@ jobs:
           echo "下载: $MH_ARM64"
           curl -fL "$MH_BASE/$MH_ARM64" -o "$MH_ARM64"
 
+          SB_AMD64="sing-box-${SB_VER}-linux-amd64.tar.gz"
+          SB_ARM64="sing-box-${SB_VER}-linux-arm64.tar.gz"
+
+          echo "下载: $SB_AMD64"
+          #curl -fL "$SB_BASE/$SB_AMD64" -o "$SB_AMD64"
+
+          echo "下载: $SB_ARM64"
+          #curl -fL "$SB_BASE/$SB_ARM64" -o "$SB_ARM64"
+
           # 下载并重新打包 sing-box-ref1nd-dev arm64
-          curl -fL https://github.com/DustinWin/proxy-tools/releases/download/sing-box/sing-box-ref1nd-dev-linux-arm64.tar.gz -o sing-box-ref1nd-dev-linux-arm64.tar.gz
+          curl -fL https://github.com/DustinWin/proxy-tools/releases/download/sing-box/sing-box-ref1nd-stable-linux-arm64.tar.gz -o sing-box-ref1nd-stable-linux-arm64.tar.gz
           mkdir -p tmp-arm64
-          tar -xzf sing-box-ref1nd-dev-linux-arm64.tar.gz -C tmp-arm64
+          tar -xzf sing-box-ref1nd-stable-linux-arm64.tar.gz -C tmp-arm64
           # 找到解压出的二进制文件（名字可能不固定）并重命名为 sing-box
           find tmp-arm64 -type f -not -name "*.md" | head -1 | xargs -I{} mv {} tmp-arm64/sing-box
-          tar -czf sing-box-ref1nd-dev-linux-arm64.tar.gz -C tmp-arm64 sing-box
+          tar -czf sing-box-ref1nd-stable-linux-arm64.tar.gz -C tmp-arm64 sing-box
           rm -rf tmp-arm64
 
-          # 下载并重新打包 sing-box-ref1nd-dev amd64-v3
-          curl -fL https://github.com/DustinWin/proxy-tools/releases/download/sing-box/sing-box-ref1nd-dev-linux-amd64-v3.tar.gz -o sing-box-ref1nd-dev-linux-amd64-v3.tar.gz
+          # 下载并重新打包 sing-box-ref1nd-dev amd64
+          curl -fL https://github.com/DustinWin/proxy-tools/releases/download/sing-box/sing-box-ref1nd-stable-linux-amd64-v1.tar.gz -o sing-box-ref1nd-stable-linux-amd64-v1.tar.gz
           mkdir -p tmp-amd64
-          tar -xzf sing-box-ref1nd-dev-linux-amd64-v3.tar.gz -C tmp-amd64
+          tar -xzf sing-box-ref1nd-stable-linux-amd64-v1.tar.gz -C tmp-amd64
           find tmp-amd64 -type f -not -name "*.md" | head -1 | xargs -I{} mv {} tmp-amd64/sing-box
-          tar -czf sing-box-ref1nd-dev-linux-amd64-v3.tar.gz -C tmp-amd64 sing-box
+          tar -czf sing-box-ref1nd-stable-linux-amd64-v1.tar.gz -C tmp-amd64 sing-box
           rm -rf tmp-amd64
 
           # ── 4. 验证文件大小 ────────────────────────────────────────
