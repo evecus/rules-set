@@ -70,6 +70,7 @@ payload:
   - +.bunnycdn.com
   - +.cdn77.com
   - +.cdn77.org
+  - +.cdnjs.com
   - +.cf-ipfs.com
   - +.cfargotunnel.com
   - +.cfdata.org
@@ -112,6 +113,7 @@ payload:
   - +.edgekey.net
   - +.edgesuite.net
   - +.encryptedsni.com
+  - +.esm.run
   - +.every1dns.net
   - +.fastly-edge.com
   - +.fastly-terrarium.com
@@ -129,6 +131,8 @@ payload:
   - +.imgix.com
   - +.imgix.net
   - +.isbgpsafeyet.com
+  - +.jsdelivr.com
+  - +.jsdelivr.net
   - +.limelight.com
   - +.lldns.net
   - +.llnw-trials.com
