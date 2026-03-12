@@ -240,6 +240,7 @@ payload:
   - +.5577.com
   - +.55bbs.com
   - +.56.com
+  - +.56img.com
   - +.56laile.com
   - +.58.com
   - +.58.com.cn
@@ -434,6 +435,7 @@ payload:
   - +.aliyundrive.com
   - +.aliyundrive.net
   - +.allflow.cn
+  - +.allhistory.com
   - +.allyes.com
   - +.alookweb.com
   - +.aloys233.top
@@ -949,6 +951,7 @@ payload:
   - +.cheyisou.com
   - +.china-chair.com
   - +.china-nengyuan.com
+  - +.china-sss.com
   - +.china-tower.com
   - +.china.com
   - +.chinaaet.com
@@ -2842,6 +2845,7 @@ payload:
   - +.longre.com
   - +.longtugame.com
   - +.longzhu.com
+  - +.loongair.cn
   - +.lorhf.com
   - +.lotpc.com
   - +.louisvuitton.cn
@@ -2898,6 +2902,8 @@ payload:
   - +.mahjongcup.net
   - +.mail4399.com
   - +.maimai.cn
+  - +.maimemo.com
+  - +.maimemostatus.com
   - +.maindown4399.com
   - +.maisanqi.com
   - +.maixhub.com
@@ -2918,6 +2924,7 @@ payload:
   - +.mapbar.com
   - +.mariokart.cn
   - +.mariokart.com.cn
+  - +.markji.com
   - +.marscode.cn
   - +.marscode.com.cn
   - +.matpool.com
@@ -3609,6 +3616,7 @@ payload:
   - +.scsentry.cn
   - +.scsjb.cn
   - +.sczsxx.com
+  - +.sda.cn
   - +.sdgdwljt.com
   - +.sdo.com
   - +.seasungames.com
@@ -3665,6 +3673,7 @@ payload:
   - +.shengyi.ai
   - +.shengyizhuanjia.com
   - +.shenmayouxi.com
+  - +.shenzhenair.com
   - +.sheui.com
   - +.shfft.com
   - +.shgsec.com
@@ -3782,6 +3791,7 @@ payload:
   - +.speiyou.com
   - +.splash-ads.cdn.unity.cn
   - +.splash-ads.unitychina.cn
+  - +.springairlines.com
   - +.springtour.com
   - +.sq.cc
   - +.sqqnh.cn
@@ -4785,7 +4795,6 @@ payload:
   - +.zhuoyou.com
   - +.zhuoyuegame.com
   - +.zhuye.kim
-  - +.zimuzu.io
   - +.ziroom.com
   - +.ziroomapartment.com
   - +.zixiaomao.com
@@ -4804,7 +4813,6 @@ payload:
   - +.zoomyou.cn
   - +.zpb365.com
   - +.zqrb.cn
-  - +.zrblog.net
   - +.zs-jlc.com
   - +.zsxq.com
   - +.zszq.com
