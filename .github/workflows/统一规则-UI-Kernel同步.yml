@@ -70,7 +70,7 @@ jobs:
           sing-box rule-set decompile --output temp_work/raw_cn_dom.json temp_work/cn_dom_raw.srs
           jq '{version: .version, rules: [.rules[] | {domain: (.domain | map(sub("^\\.+"; ""))), domain_suffix: (.domain_suffix | map(sub("^\\.+"; "")))} | del(..|nulls)]}' temp_work/raw_cn_dom.json > sing-box/cn_domain-lite.json
 
-          FILES=("category-ai-!cn.yaml" "discord.yaml" "facebook.yaml" "github.yaml" "netflix.yaml" "google.yaml" "instagram.yaml" "paypal.yaml" "reddit.yaml" "grok.yaml" "spotify.yaml" "tiktok.yaml" "twitter.yaml" "whatsapp.yaml" "openai.yaml" "youtube.yaml" "geogle-gemini.yaml" "telegram.yaml" "claude.yaml")
+          FILES=("category-ai-!cn.yaml" "discord.yaml" "facebook.yaml" "github.yaml" "netflix.yaml" "google.yaml" "instagram.yaml" "paypal.yaml" "reddit.yaml" "grok.yaml" "spotify.yaml" "tiktok.yaml" "twitter.yaml" "whatsapp.yaml" "openai.yaml" "youtube.yaml" "geogle-gemini.yaml" "telegram.yaml" "claude.yaml" "amazon.yaml")
           for file in "${FILES[@]}"; do
             curl -sL "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/$file" -o "temp_work/$file"
             grep -E '^\s*-\s*"?\+\.' "temp_work/$file" | sed -E 's/^[[:space:]]*- "?\+\.//; s/"$//; s/^\.*//' >> temp_build/suffix.txt || true
