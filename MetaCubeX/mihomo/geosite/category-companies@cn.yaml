@@ -1,15 +1,63 @@
 payload:
+    - +.teamviewer.cn
+    - +.aboutamazon.cn
+    - +.alexafund.cn
+    - +.alexafund.com.cn
+    - +.amazon.cn
+    - +.amazonbusiness.cn
+    - +.amazonbusiness.com.cn
+    - +.amazonchoice.cn
+    - +.amazonchoice.com.cn
+    - +.amazonchoices.cn
+    - +.amazonchoices.com.cn
+    - +.amazoninspire.cn
+    - +.amazoninspire.com.cn
+    - +.amazonlaunchpad.cn
+    - +.amazonlaunchpad.com.cn
+    - +.amazonlending.com.cn
+    - +.amazonnow.cn
+    - +.amazonnow.com.cn
+    - +.assoc-amazon.cn
+    - +.primeday.cn
+    - +.primeday.com.cn
+    - +.yamaxun.cn
+    - +.z.cn
+    - images-cn.ssl-images-amazon.com
+    - images-cn-8.ssl-images-amazon.com
+    - +.amazonprimevideo.cn
+    - +.amazonprimevideo.com.cn
+    - +.a2z.org.cn
+    - +.amazonaws.cn
+    - +.amazonaws.com.cn
+    - +.amazonwebservices.com.cn
+    - +.amazonworkdocs.cn
+    - +.amazonworkdocs.com.cn
+    - +.asfiovnxocqpcry.com.cn
+    - +.aws-border.cn
+    - +.aws-icp-domain-manager.cn
+    - +.awsapps.cn
+    - +.awsapps.com.cn
+    - +.awsstatic.cn
+    - +.cloudfront-cn.net
+    - +.cloudfront-test.cn
+    - +.cloudfront.cn
+    - +.nwcdcloud.cn
+    - +.nwcdcloud.com.cn
+    - +.nwcddns.cn
+    - +.nwcdinfosec.cn
+    - +.route53.cn
+    - +.sagemaker.com.cn
+    - +.amzndns-cn.biz
+    - +.amzndns-cn.cn
+    - +.amzndns-cn.com
+    - +.amzndns-cn.net
+    - +.kindle.cn
+    - +.kindleoasis.cn
+    - +.kindleoasis.com.cn
     - +.louisvuitton.cn
     - +.lvcampaign.com
     - tp.louisvuitton.com
-    - +.sandisk.cn
-    - www.amd.com
-    - +.canon.cn
-    - +.canon.com.cn
-    - +.cisco.cn
-    - +.cisco.com.cn
-    - +.network-auth.cn
-    - +.webex.com.cn
+    - +.adobedc.cn
     - +.apple.cn
     - +.apple.com.cn
     - +.apple-store.cn
@@ -267,10 +315,6 @@ payload:
     - www.apple.com
     - www.apple.com.edgekey.net.globalredir.akadns.net
     - xp.apple.com
-    - +.researchkit.cn
-    - +.researchkit.com.cn
-    - +.swiftui.cn
-    - +.swiftui.com.cn
     - certs-lb.apple.com.akadns.net
     - certs.apple.com
     - crl-lb.apple.com.akadns.net
@@ -300,23 +344,46 @@ payload:
     - +.itunesapple.cn
     - +.itunesradio.cn
     - +.itunesradio.com.cn
-    - +.asus.com.cn
-    - +.att.cn
-    - +.attcorp.cn
-    - +.myqnapcloud.cn
-    - +.qlinkto.cn
-    - +.qnap.com.cn
-    - +.gpsonextra.net
-    - +.izatcloud.net
-    - +.qceventscenter.com.cn
-    - +.qualcomm.cn
-    - +.qualcomm.cn.cdn.cloudflare.net
-    - +.xtracloud.cn
-    - +.stmicroelectronics.com.cn
-    - +.intel.cn
-    - +.heptio.cn
-    - +.aoruszone.cn
-    - +.gigabyte.cn
+    - +.researchkit.cn
+    - +.researchkit.com.cn
+    - +.swiftui.cn
+    - +.swiftui.com.cn
+    - +.acer.com.cn
+    - +.dell-brand.com
+    - +.dell.com.cn
+    - +.dell-alw.com
+    - +.dellemc.com.cn
+    - +.dellmobile.cn
+    - +.delltechnologies.com.cn
+    - +.platform.dell.com
+    - afcs.dell.com
+    - clientperipherals.dell.com
+    - customization-cdn.dell.com
+    - dds.dell.com
+    - dl.dell.com
+    - ea2cn-dev-outlet.dell.com
+    - ea2cn-prod-outlet.dell.com
+    - ea2cn-staging-outlet.dell.com
+    - fcs.dell.com
+    - fta.dell.com
+    - ftaapj.dell.com
+    - ftaemea.dell.com
+    - ftasitapj.dell.com
+    - gbxgateway-dev.dell.com
+    - gbxgateway.dell.com
+    - i.dell.com
+    - nexus.dell.com
+    - p.cdn.persaas.dell.com
+    - scene7-cdn.dell.com
+    - si.cdn.dell.com
+    - sm.dell.com
+    - snp.cdn.dell.com
+    - snpi.dell.com
+    - supportassist.dell.com
+    - www-csb.dell.com
+    - www.dell.com
+    - +.yahoo.cn
+    - +.yahoo.com.cn
     - +.kaspersky.com.cn
     - activation-v2.kaspersky.com
     - activation-v2.geo.kaspersky.com
@@ -415,8 +482,8 @@ payload:
     - s18.upd.kaspersky.com
     - s19.upd.kaspersky.com
     - +.samsungeshop.com.cn
-    - +.acer.com.cn
-    - +.duolingo.cn
+    - +.aoruszone.cn
+    - +.gigabyte.cn
     - +.google.cn
     - +.g.cn
     - +.gkecnapps.cn
@@ -561,9 +628,9 @@ payload:
     - www.gstatic.com
     - www.pxcc.com
     - xn--flw351e.com
+    - +.ggpht.cn
     - firebase-settings.crashlytics.com
     - redirector.c.play.google.com
-    - +.ggpht.cn
     - pki-goog.l.google.com
     - c.pki.goog
     - i.pki.goog
@@ -571,110 +638,21 @@ payload:
     - crl.pki.goog
     - crls.pki.goog
     - ocsp.pki.goog
-    - +.yahoo.cn
-    - +.yahoo.com.cn
+    - +.intel.cn
     - +.razerapi.com
     - +.razersynapse.com
     - +.razerzone.com
-    - +.dell-brand.com
-    - +.dell.com.cn
-    - +.dell-alw.com
-    - +.dellemc.com.cn
-    - +.dellmobile.cn
-    - +.delltechnologies.com.cn
-    - +.platform.dell.com
-    - afcs.dell.com
-    - clientperipherals.dell.com
-    - customization-cdn.dell.com
-    - dds.dell.com
-    - dl.dell.com
-    - ea2cn-dev-outlet.dell.com
-    - ea2cn-prod-outlet.dell.com
-    - ea2cn-staging-outlet.dell.com
-    - fcs.dell.com
-    - fta.dell.com
-    - ftaapj.dell.com
-    - ftaemea.dell.com
-    - ftasitapj.dell.com
-    - gbxgateway-dev.dell.com
-    - gbxgateway.dell.com
-    - i.dell.com
-    - nexus.dell.com
-    - p.cdn.persaas.dell.com
-    - scene7-cdn.dell.com
-    - si.cdn.dell.com
-    - sm.dell.com
-    - snp.cdn.dell.com
-    - snpi.dell.com
-    - supportassist.dell.com
-    - www-csb.dell.com
-    - www.dell.com
+    - +.asus.com.cn
+    - +.heptio.cn
     - +.hpstore.cn
+    - +.stmicroelectronics.com.cn
     - +.geforce.cn
     - +.gputechconf.cn
     - +.nvidia.cn
     - cn.download.nvidia.com
-    - +.yahoo.cn
-    - +.yahoo.com.cn
-    - +.teamviewer.cn
-    - +.panasonic.cn
-    - +.quickconnect.cn
-    - +.synology.cn
-    - +.adobedc.cn
-    - +.aboutamazon.cn
-    - +.alexafund.cn
-    - +.alexafund.com.cn
-    - +.amazon.cn
-    - +.amazonbusiness.cn
-    - +.amazonbusiness.com.cn
-    - +.amazonchoice.cn
-    - +.amazonchoice.com.cn
-    - +.amazonchoices.cn
-    - +.amazonchoices.com.cn
-    - +.amazoninspire.cn
-    - +.amazoninspire.com.cn
-    - +.amazonlaunchpad.cn
-    - +.amazonlaunchpad.com.cn
-    - +.amazonlending.com.cn
-    - +.amazonnow.cn
-    - +.amazonnow.com.cn
-    - +.assoc-amazon.cn
-    - +.primeday.cn
-    - +.primeday.com.cn
-    - +.yamaxun.cn
-    - +.z.cn
-    - images-cn.ssl-images-amazon.com
-    - images-cn-8.ssl-images-amazon.com
-    - +.a2z.org.cn
-    - +.amazonaws.cn
-    - +.amazonaws.com.cn
-    - +.amazonwebservices.com.cn
-    - +.amazonworkdocs.cn
-    - +.amazonworkdocs.com.cn
-    - +.asfiovnxocqpcry.com.cn
-    - +.aws-border.cn
-    - +.aws-icp-domain-manager.cn
-    - +.awsapps.cn
-    - +.awsapps.com.cn
-    - +.awsstatic.cn
-    - +.cloudfront-cn.net
-    - +.cloudfront-test.cn
-    - +.cloudfront.cn
-    - +.nwcdcloud.cn
-    - +.nwcdcloud.com.cn
-    - +.nwcddns.cn
-    - +.nwcdinfosec.cn
-    - +.route53.cn
-    - +.sagemaker.com.cn
-    - +.amzndns-cn.biz
-    - +.amzndns-cn.cn
-    - +.amzndns-cn.com
-    - +.amzndns-cn.net
-    - +.kindle.cn
-    - +.kindleoasis.cn
-    - +.kindleoasis.com.cn
-    - +.amazonprimevideo.cn
-    - +.amazonprimevideo.com.cn
+    - www.amd.com
+    - +.att.cn
+    - +.attcorp.cn
     - +.dcg.microsoft.com
     - +.dynamics.cn
     - +.engkoo.com
@@ -742,6 +720,9 @@ payload:
     - vz.download.prss.microsoft.com
     - wscont1.apps.microsoft.com
     - wscont2.apps.microsoft.com
+    - +.microsoftnews.cn
+    - +.msn.cn
+    - +.browser.events.data.msn.cn
     - +.xboxlive.cn
     - +.21vbc.com
     - +.21vbluecloud.com
@@ -841,9 +822,17 @@ payload:
     - +.microsoftreactor.com.cn
     - +.reactorms.com.cn
     - www.microsoft.com
-    - +.microsoftnews.cn
-    - +.msn.cn
-    - +.browser.events.data.msn.cn
+    - +.quickconnect.cn
+    - +.synology.cn
+    - +.canon.cn
+    - +.canon.com.cn
+    - +.panasonic.cn
+    - +.cisco.cn
+    - +.cisco.com.cn
+    - +.network-auth.cn
+    - +.webex.com.cn
+    - +.yahoo.cn
+    - +.yahoo.com.cn
     - +.amplifi.com.cn
     - +.frontrow.com.cn
     - +.ubnt.com
@@ -851,3 +840,14 @@ payload:
     - +.ui.com.cn
     - +.uum.com.cn
     - +.uwn.com
+    - +.duolingo.cn
+    - +.myqnapcloud.cn
+    - +.qlinkto.cn
+    - +.qnap.com.cn
+    - +.sandisk.cn
+    - +.gpsonextra.net
+    - +.izatcloud.net
+    - +.qceventscenter.com.cn
+    - +.qualcomm.cn
+    - +.qualcomm.cn.cdn.cloudflare.net
+    - +.xtracloud.cn
