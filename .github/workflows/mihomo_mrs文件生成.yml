@@ -11,11 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout master branch
+      - name: Checkout master branch (仅 mihomo 目录)
         uses: actions/checkout@v4
         with:
           ref: master
           fetch-depth: 0
+          sparse-checkout: mihomo
+          sparse-checkout-cone-mode: false
 
       - name: Install mihomo
         run: |
@@ -38,10 +40,15 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "actions@github.com"
-          git add mihomo/*.mrs || true
+          
+          # 仅添加新生成或修改的文件，不要用 git add .
+          git add mihomo/*.mrs
+          
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
+            # 这里的 commit 会包含 delete 标记，
+            # 如果你发现还是有 delete，尝试执行 git checkout mihomo/*.mrs 恢复误删
             git commit -m "Auto convert Mihomo rules"
             git push origin master
           fi
