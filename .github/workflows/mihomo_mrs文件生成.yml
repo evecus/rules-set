@@ -11,13 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout master branch (仅 mihomo 目录)
+      - name: Checkout master branch
         uses: actions/checkout@v4
         with:
           ref: master
           fetch-depth: 0
-          sparse-checkout: mihomo
-          sparse-checkout-cone-mode: false
 
       - name: Install mihomo
         run: |
