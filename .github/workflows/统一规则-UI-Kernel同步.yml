@@ -467,19 +467,10 @@ jobs:
           SB_ARM64="sing-box-${SB_VER}-linux-arm64.tar.gz"
 
           echo "下载: $SB_AMD64"
-          #curl -fL "$SB_BASE/$SB_AMD64" -o "$SB_AMD64"
+          curl -fL "$SB_BASE/$SB_AMD64" -o "$SB_AMD64"
 
           echo "下载: $SB_ARM64"
-          #curl -fL "$SB_BASE/$SB_ARM64" -o "$SB_ARM64"
-
-          # 下载并重新打包 sing-box-ref1nd-dev arm64
-          curl -fL https://github.com/DustinWin/proxy-tools/releases/download/sing-box/sing-box-ref1nd-stable-linux-arm64.tar.gz -o sing-box-ref1nd-stable-linux-arm64.tar.gz
-          mkdir -p tmp-arm64
-          tar -xzf sing-box-ref1nd-stable-linux-arm64.tar.gz -C tmp-arm64
-          # 找到解压出的二进制文件（名字可能不固定）并重命名为 sing-box
-          find tmp-arm64 -type f -not -name "*.md" | head -1 | xargs -I{} mv {} tmp-arm64/sing-box
-          tar -czf sing-box-ref1nd-stable-linux-arm64.tar.gz -C tmp-arm64 sing-box
-          rm -rf tmp-arm64
+          curl -fL "$SB_BASE/$SB_ARM64" -o "$SB_ARM64"
 
       
 
@@ -490,6 +481,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git checkout --orphan temp-kernel
-          git add mihomo-linux-*.gz
+          git add mihomo-linux-*.gz sing-box-*.tar.gz
           git commit -m "chore: 更新内核 mihomo-v${MH_VER} & sing-box-ref1nd-dev ($(date +'%Y-%m-%d'))"
           git push origin temp-kernel:kernel --force
