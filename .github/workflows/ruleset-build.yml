@@ -163,15 +163,15 @@ jobs:
       - name: Copy built files
         run: |
           mkdir -p repo/sing repo/mihomo
-          cp /tmp/sing/*.json repo/sing/
-          cp /tmp/sing/*.srs  repo/sing/
+          cp /tmp/sing/*.json repo/sing-box/
+          cp /tmp/sing/*.srs  repo/sing-box/
           cp /tmp/mi/*.yaml   repo/mihomo/
           cp /tmp/mi/*.mrs    repo/mihomo/
 
       - name: Commit and push
         working-directory: repo
         run: |
-          git add sing/ mihomo/
+          git add sing-box/ mihomo/
           if git diff --cached --quiet; then
             echo "规则集无变化，跳过提交。"
           else
