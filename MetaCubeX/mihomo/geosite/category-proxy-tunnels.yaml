@@ -1,4 +1,7 @@
 payload:
+    - +.tailscale.com
+    - +.tailscale.io
+    - +.ts.net
     - +.ngrok-free.app
     - +.ngrok-free.dev
     - +.ngrok-free.pizza
@@ -10,6 +13,3 @@ payload:
     - +.ngrok.pro
     - +.pinggy.io
     - +.pinggy.link
-    - +.tailscale.com
-    - +.tailscale.io
-    - +.ts.net
