@@ -1,25 +1,32 @@
-const { type, name } = $arguments
 /**
- * 兼容版 Sing-box 自动填充脚本 (解决 undefined 报错)
+ * 自动解析参数版 Sing-box 脚本
+ * 兼容所有环境，防止 type: undefined 报错
  */
 
 async function main() {
-    // --- 1. 安全获取参数 ---
+    // --- 1. 强化版参数解析 ---
     let args = {};
     if (typeof $arguments !== 'undefined' && $arguments) {
-        args = $arguments;
-    } else {
-        // 如果 $arguments 为空，尝试从全局变量读取或设为默认值
-        args = { name: "default", type: "0" };
+        if (typeof $arguments === 'string') {
+            // 如果是字符串 (如 "name=all&type=collection")，手动解析
+            $arguments.split('&').forEach(item => {
+                const [key, value] = item.split('=');
+                args[key] = value;
+            });
+        } else {
+            // 如果已经是对象，直接赋值
+            args = $arguments;
+        }
     }
 
-    const name = args.name || "share"; // 默认值设为 share 防止 undefined
-    const type = args.type || "0";
+    // 获取参数并设定默认值
+    const name = args.name || "all";
+    const type = args.type || "collection"; 
     const isCollection = /^1$|col/i.test(String(type));
 
-    console.log(`正在获取: ${isCollection ? '组合' : '订阅'} - ${name}`);
+    console.log(`解析成功 - 模式: ${isCollection ? '组合' : '订阅'}, 名称: ${name}`);
 
-    // --- 2. 获取订阅节点数据 ---
+    // --- 2. 获取节点数据 ---
     let proxies = [];
     try {
         proxies = await produceArtifact({
@@ -29,48 +36,34 @@ async function main() {
             produceType: 'internal',
         });
     } catch (e) {
-        console.log("获取节点失败: " + e.message);
-        proxies = [];
+        throw new Error(`无法从 Sub-Store 获取 [${name}]: ${e.message}`);
     }
 
-    // --- 3. 解析原始配置文件 ---
-    let config;
-    try {
-        config = JSON.parse($files[0]);
-    } catch (e) {
-        console.log("JSON 解析失败，请检查配置文件格式");
-        $content = $files[0];
-        return;
-    }
-
-    // --- 4. 执行注入逻辑 ---
+    // --- 3. 解析并填充 JSON ---
+    let config = JSON.parse($files[0]);
     if (!config.outbounds) config.outbounds = [];
-    
+
     // 注入节点对象
     config.outbounds.push(...proxies);
-
-    // 获取所有节点 tag
     const proxyTags = proxies.map(p => p.tag);
 
     // 填充【默认代理】和【自动选择】
-    if (Array.isArray(config.outbounds)) {
-        config.outbounds.forEach(outbound => {
-            if (outbound.tag === '默认代理' || outbound.tag === '自动选择') {
-                if (!Array.isArray(outbound.outbounds)) {
-                    outbound.outbounds = [];
-                }
-                // 将新节点追加进去
-                outbound.outbounds.push(...proxyTags);
-            }
-        });
-    }
+    config.outbounds.forEach(outbound => {
+        if (outbound.tag === '默认代理' || outbound.tag === '自动选择') {
+            outbound.outbounds = Array.isArray(outbound.outbounds) ? outbound.outbounds : [];
+            outbound.outbounds.push(...proxyTags);
+        }
+    });
 
-    // --- 5. 输出结果 ---
+    // --- 4. 输出结果 ---
     $content = JSON.stringify(config, null, 2);
 }
 
-// 执行
 main().catch(err => {
-    console.log('脚本执行崩溃: ' + err.message);
+    // 弹出具体错误信息
+    if (typeof $notification !== 'undefined') {
+        $notification.post("脚本执行失败", err.message, "请检查 Sub-Store 资源名称");
+    }
+    console.log("Error: " + err.message);
     $content = $files[0];
 });
