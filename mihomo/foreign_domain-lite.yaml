@@ -24,8 +24,10 @@ payload:
   - +.acheter-followers-instagram.com
   - +.acheterdesfollowersinstagram.com
   - +.acheterfollowersinstagram.com
+  - +.adfox.ru
   - +.adgoogle.net
   - +.admeld.com
+  - +.admetrica.ru
   - +.admob-cn.com
   - +.admob.com
   - +.ads-twitter.com
@@ -1336,6 +1338,8 @@ payload:
   - +.keytransparency.org
   - +.kimi.com
   - +.kingstagram.com
+  - +.kinopoisk-ru.clstorage.net
+  - +.kinopoisk.ru
   - +.klik.me
   - +.krakenjs.com
   - +.labs.google
@@ -1426,6 +1430,7 @@ payload:
   - +.mywaytopay.net
   - +.n.cn
   - +.namiso.com
+  - +.naydex.net
   - +.nbabot.net
   - +.near.by
   - +.nest.com
@@ -1781,6 +1786,7 @@ payload:
   - +.rocksdb.com
   - +.rocksdb.net
   - +.rocksdb.org
+  - +.rostaxi.org
   - +.run.app
   - +.rwkv.cn
   - +.rwkv.com
@@ -1917,6 +1923,7 @@ payload:
   - +.ttoverseaus.net
   - +.ttvnw.net
   - +.ttwstatic.com
+  - +.turbopages.org
   - +.turn.livekit.cloud
   - +.tweetdeck.com
   - +.twimg.com
@@ -1976,6 +1983,8 @@ payload:
   - +.webmproject.org
   - +.webpkgcache.com
   - +.webrtc.org
+  - +.webvisor.com
+  - +.webvisor.org
   - +.weltweitwachsen.de
   - +.whatbrowser.org
   - +.whats.new
@@ -2046,6 +2055,7 @@ payload:
   - +.xn--9kr7l.com
   - +.xn--9trs65b.com
   - +.xn--bnq297cix3a.cn
+  - +.xn--d1acpjx3f.xn--p1ai
   - +.xn--flw351e
   - +.xn--flw351e.com
   - +.xn--ggle-55da.com
@@ -2061,6 +2071,54 @@ payload:
   - +.xoom.us
   - +.xoomcom.com
   - +.xplr.co
+  - +.ya.ru
+  - +.yads.tech
+  - +.yandex
+  - +.yandex-bank.net
+  - +.yandex-images.clstorage.net
+  - +.yandex-team.ru
+  - +.yandex.aero
+  - +.yandex.az
+  - +.yandex.by
+  - +.yandex.cloud
+  - +.yandex.co.il
+  - +.yandex.com
+  - +.yandex.com.am
+  - +.yandex.com.ge
+  - +.yandex.com.ru
+  - +.yandex.com.tr
+  - +.yandex.com.ua
+  - +.yandex.de
+  - +.yandex.ee
+  - +.yandex.eu
+  - +.yandex.fi
+  - +.yandex.fr
+  - +.yandex.jobs
+  - +.yandex.kg
+  - +.yandex.kz
+  - +.yandex.lt
+  - +.yandex.lv
+  - +.yandex.md
+  - +.yandex.net
+  - +.yandex.org
+  - +.yandex.pl
+  - +.yandex.ru
+  - +.yandex.st
+  - +.yandex.sx
+  - +.yandex.tj
+  - +.yandex.tm
+  - +.yandex.tr
+  - +.yandex.ua
+  - +.yandex.uz
+  - +.yandexadexchange.net
+  - +.yandexcloud.net
+  - +.yandexcom.net
+  - +.yandexmetrica.com
+  - +.yandexwebcache.net
+  - +.yandexwebcache.org
+  - +.yastat.net
+  - +.yastatic-net.ru
+  - +.yastatic.net
   - +.yiyan.baidu.com
   - +.yogalayout.com
   - +.yoma.cn
@@ -2594,4 +2652,5 @@ payload:
   - www.pxcc.com
   - www.recaptcha.net
   - xn--flw351e.com
+  - yandex-pogoda.static-storage.net
   - yt3.googleusercontent.com
