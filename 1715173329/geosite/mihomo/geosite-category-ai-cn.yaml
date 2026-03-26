@@ -1,4 +1,5 @@
 payload:
+  - +.aispeech.com
   - +.askdiandian.com
   - +.baichuan-ai.com
   - +.bigmodel.cn
@@ -17,6 +18,8 @@ payload:
   - +.doubao.com
   - +.doubaocdn.com
   - +.doudou.com
+  - +.dui.ai
+  - +.duiopen.com
   - +.faxingbao.com
   - +.hailuoai.com
   - +.hi-butterfly.cn

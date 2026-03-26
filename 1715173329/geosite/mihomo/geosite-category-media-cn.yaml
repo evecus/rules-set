@@ -21,6 +21,7 @@ payload:
   - +.adv-sv-stat.focus.cn
   - +.aiganggu.com
   - +.anhuinews.com
+  - +.anhuiyun.com
   - +.anzhuo.cn
   - +.assp.sohu.com
   - +.bdu.focus.cn
@@ -67,6 +68,8 @@ payload:
   - +.cqnews.net
   - +.cqsjb.com
   - +.cs.com.cn
+  - +.ctdsb.net
+  - +.ctoutiao.com
   - +.cyzone.cn
   - +.cztv.com
   - +.cztvcdn.com
@@ -97,6 +100,7 @@ payload:
   - +.gjgbdszt.net.cn
   - +.gmw.com
   - +.go2map.com
+  - +.guancha.cn
   - +.guigu.org
   - +.gw.com.cn
   - +.hexin.cn
@@ -110,6 +114,7 @@ payload:
   - +.huxiucdn.com
   - +.icntvcdn.com
   - +.icpcw.com
+  - +.icswb.com
   - +.idcquan.com
   - +.ifanr.cn
   - +.ifanr.com
@@ -119,6 +124,7 @@ payload:
   - +.ifeng.com
   - +.ifengimg.com
   - +.ifengweekly.com
+  - +.ikanchai.com
   - +.imedao.com
   - +.imp.go.sohu.com
   - +.inewsweek.cn
@@ -137,16 +143,19 @@ payload:
   - +.jiemian.com
   - +.jiemian.com.cn
   - +.jin10.com
+  - +.jinantimes.com.cn
   - +.jiqizhixin.com
   - +.jrj.com.cn
   - +.jrjimg.cn
   - +.jsbc.com
   - +.jstv.com
+  - +.jxnews.com.cn
   - +.jxpp.com
   - +.jztvnews.com
   - +.kankanews.com
   - +.kankannews.com
   - +.kksmg.com
+  - +.knewsmart.com
   - +.lancdn.com
   - +.landian.vip
   - +.landian.xyz
@@ -172,7 +181,9 @@ payload:
   - +.ourl.co
   - +.p.aty.sohu.com
   - +.pb.i.sogou.com
+  - +.pcauto.com.cn
   - +.pchome.net
+  - +.pchouse.com.cn
   - +.pchpic.net
   - +.pconline.com.cn
   - +.pcpop.com
@@ -218,6 +229,7 @@ payload:
   - +.sohu.com
   - +.sohucs.com
   - +.solidot.org
+  - +.sootoo.com
   - +.soso.com
   - +.soso.com.cn
   - +.sososnap.com
@@ -232,6 +244,7 @@ payload:
   - +.sznews.com
   - +.szpgm.com
   - +.takungpao.com
+  - +.techwalker.com
   - +.techweb.com.cn
   - +.teemo.cn
   - +.thecover.cn
@@ -274,6 +287,7 @@ payload:
   - +.xn--kprv4ewxfr9cpxcc7joo6apn8a.xn--fiqs8s
   - +.xueqiu.com
   - +.yangshipin.cn
+  - +.ycwb.com
   - +.yeyousg.com
   - +.yicai.com
   - +.yidianliulan.cn
@@ -289,6 +303,7 @@ payload:
   - +.zggbdszt.com.cn
   - +.zggbdszt.net.cn
   - +.zhichanli.com
+  - +.zhiding.cn
   - +.zjstv.com
   - +.zol-img.com.cn
   - +.zol.com.cn
