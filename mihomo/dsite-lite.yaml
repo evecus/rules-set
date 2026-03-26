@@ -211,6 +211,7 @@ payload:
   - +.51cdn.com
   - +.51credit.com
   - +.51cto.com
+  - +.51ctocdn.cn
   - +.51dzt.com
   - +.51eshop.com
   - +.51gaifang.com
@@ -305,6 +306,7 @@ payload:
   - +.885.com
   - +.88cdn.com
   - +.8btc.com
+  - +.8uri.cn
   - +.900.la
   - +.900cha.com
   - +.91.com
@@ -419,6 +421,7 @@ payload:
   - +.airitilibrary.cn
   - +.aisee.tv
   - +.aiskycn.com
+  - +.aispeech.com
   - +.aitcfw.com
   - +.aixcoder.com
   - +.aixifan.com
@@ -478,6 +481,7 @@ payload:
   - +.ancientbooks.cn
   - +.anfensi.com
   - +.anhuinews.com
+  - +.anhuiyun.com
   - +.anitabi.cn
   - +.anjuke.com
   - +.anjukestatic.com
@@ -1186,6 +1190,7 @@ payload:
   - +.ctdns.cn
   - +.ctdns.com.cn
   - +.ctdns.net
+  - +.ctdsb.net
   - +.ctecdn.cn
   - +.ctecx.cn
   - +.ctfile.com
@@ -1929,6 +1934,7 @@ payload:
   - +.guaiguai.com
   - +.guaiku.com
   - +.guanaitong.com
+  - +.guancha.cn
   - +.guanggaoad.youku.com
   - +.guanggaotongapp.cn
   - +.guanhaobio.com
@@ -2247,6 +2253,7 @@ payload:
   - +.icourses.cn
   - +.icpcw.com
   - +.icplishi.com
+  - +.icswb.com
   - +.ictbda.cn
   - +.ictbda.com
   - +.icve.com.cn
@@ -2297,6 +2304,7 @@ payload:
   - +.ijiandao.com
   - +.ijinshan.com
   - +.ikafan.com
+  - +.ikanchai.com
   - +.ikea.cn
   - +.ilanzou.com
   - +.ileapcloud.com
@@ -2440,6 +2448,7 @@ payload:
   - +.jikexueyuan.com
   - +.jikipedia.com
   - +.jin10.com
+  - +.jinantimes.com.cn
   - +.jindidata.com
   - +.jinglingbiaozhu.com
   - +.jinianbi.com
@@ -2562,6 +2571,7 @@ payload:
   - +.jvoice.cn
   - +.jxedt.com
   - +.jxksw.net
+  - +.jxnews.com.cn
   - +.jxpp.com
   - +.jyeoo.com
   - +.jyeoo.net
@@ -2632,6 +2642,7 @@ payload:
   - +.kkzj.com
   - +.klpbbs.com
   - +.knet.cn
+  - +.knewsmart.com
   - +.kolbuyer.cn
   - +.kongfz.com
   - +.koocdn.com
@@ -3347,8 +3358,10 @@ payload:
   - +.pb.i.sogou.com
   - +.pbiwebcontent.cn
   - +.pc6.com
+  - +.pcauto.com.cn
   - +.pcbeta.com
   - +.pchome.net
+  - +.pchouse.com.cn
   - +.pchpic.net
   - +.pconline.com.cn
   - +.pcpop.com
@@ -3796,6 +3809,7 @@ payload:
   - +.soku.com
   - +.solidot.org
   - +.somode.com
+  - +.sootoo.com
   - +.soso.com
   - +.soso.com.cn
   - +.sososnap.com
@@ -3962,6 +3976,7 @@ payload:
   - +.tebiefuza.cloud
   - +.tebiefuza.cn
   - +.tebon.com.cn
+  - +.techwalker.com
   - +.techweb.com.cn
   - +.teemo.cn
   - +.teleows.com
@@ -4273,7 +4288,6 @@ payload:
   - +.wcbygame.com
   - +.wch-ic.com
   - +.wch.cn
-  - +.wdjimg.com
   - +.wdzj.com
   - +.we4399.com
   - +.weand.com
@@ -4553,6 +4567,7 @@ payload:
   - +.ycgame.com
   - +.ycrx360.com
   - +.yctdyy.com
+  - +.ycwb.com
   - +.ydamc.com
   - +.ydsc.com.cn
   - +.ydsys.cn
@@ -4801,6 +4816,7 @@ payload:
   - +.zhibo8.cc
   - +.zhichanli.com
   - +.zhidemai.com
+  - +.zhiding.cn
   - +.zhiding.com.cn
   - +.zhidx.com
   - +.zhifang.com
@@ -5036,6 +5052,7 @@ payload:
   - csi.gstatic.com
   - cstat.apple.com
   - cstat.cdn-apple.com
+  - ctdsb.clouddiffuse.xyz
   - ctldl.windowsupdate.com
   - cueme-api.quark.cn
   - customization-cdn.dell.com

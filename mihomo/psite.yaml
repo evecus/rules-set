@@ -48,6 +48,7 @@ payload:
   - +.airhorn.solutions
   - +.airhornbot.com
   - +.aisandbox-pa.googleapis.com
+  - +.aispeech.com
   - +.aistudio.google.com
   - +.aiv-cdn.net
   - +.akamai.net
@@ -421,6 +422,8 @@ payload:
   - +.doubleclick.net
   - +.doudou.com
   - +.draftjs.org
+  - +.dui.ai
+  - +.duiopen.com
   - +.elpionero.es
   - +.eotarchive.org
   - +.episodic.com
