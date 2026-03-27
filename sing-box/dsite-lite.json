@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "rules": [
     {
       "domain": [
@@ -640,7 +640,7 @@
         "xz.pphimalayanrt.com"
       ],
       "domain_suffix": [
-        "0033.cn",
+        "cn",
         "00cdn.com",
         "0123456789.com",
         "0379home.com",
