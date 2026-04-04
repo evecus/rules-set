@@ -1,4 +1,15 @@
 payload:
+    - +.ads-api.duolingo.com
+    - +.analytics.vpc.duolingo.com
+    - +.metrics.duolingo.com
+    - +.ads.yahoo.com
+    - +.gemini.yahoo.com
+    - +.ysm.yahoo.com
+    - +.ads.yahoo.com
+    - +.gemini.yahoo.com
+    - +.ysm.yahoo.com
+    - +.amazon-adsystem.com
+    - +.serving-sys.com
     - +.2mdn-cn.net
     - +.2mdn.net
     - +.admob-cn.com
@@ -52,23 +63,6 @@ payload:
     - +.urchin.com
     - analytics.google.com
     - +.ads.youtube.com
-    - +.amazon-adsystem.com
-    - +.serving-sys.com
-    - +.advertising.adobe.com
-    - +.tubemogul.com
-    - +.ads-api.duolingo.com
-    - +.analytics.vpc.duolingo.com
-    - +.metrics.duolingo.com
-    - sentry.hetzner.company
-    - +.ads.yahoo.com
-    - +.gemini.yahoo.com
-    - +.ysm.yahoo.com
-    - +.advertising.apple.com
-    - +.api-adservices.apple.com
-    - +.iadsdk.apple.com
-    - +.iad.apple.com
-    - +.qwapi.com
-    - +.snapads.com
     - +.graph.instagram.com
     - +.graph-fallback.instagram.com
     - +.graph.whatsapp.com
@@ -76,10 +70,6 @@ payload:
     - +.analytics.facebook.com
     - +.facebookads.com
     - +.pixel.facebook.com
-    - +.samsungads.com
-    - +.ads.yahoo.com
-    - +.gemini.yahoo.com
-    - +.ysm.yahoo.com
     - +.clarity.ms
     - +.microsoftads.com
     - +.msads.net
@@ -89,3 +79,13 @@ payload:
     - +.copilot-telemetry.githubusercontent.com
     - +.browser.events.data.msn.cn
     - +.browser.events.data.msn.com
+    - +.snapads.com
+    - +.advertising.adobe.com
+    - +.tubemogul.com
+    - +.samsungads.com
+    - sentry.hetzner.company
+    - +.advertising.apple.com
+    - +.api-adservices.apple.com
+    - +.iadsdk.apple.com
+    - +.iad.apple.com
+    - +.qwapi.com
