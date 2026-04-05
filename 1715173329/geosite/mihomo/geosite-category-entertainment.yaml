@@ -1838,6 +1838,7 @@ payload:
   - vod-abematv.akamaized.net
   - wb-agora-hydra-file-storage-k1.s3.amazonaws.com
   - weblive-hamivideo.cdn.hinet.net
+  - ws.audioscrobbler.com
   - www4-static.gog-statics.com
   - xz.pphimalayanrt.com
   - yt3.googleusercontent.com
